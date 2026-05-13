@@ -55,3 +55,14 @@ mvn test
 
 - Prometheus: http://localhost:9090
 - Grafana: http://localhost:3000 (admin / admin)
+
+The pre-built Grafana board lives at
+`monitoring/grafana/dashboards/contractoriq-dashboard.json` —
+import it under *Dashboards → New → Import* after the stack is up.
+
+## Notes
+
+- Postgres maps to host port **5433** to avoid clashing with a local Postgres
+  on 5432. Containers still talk to it on 5432 internally.
+- Without `ANTHROPIC_API_KEY` set, the vision service returns neutral
+  placeholder analysis so the rest of the system stays runnable.
