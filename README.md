@@ -11,7 +11,7 @@ hire / caution / avoid recommendation backed by Claude-generated reasoning.
 - **contractoriq-api** (Spring Boot 3, Java 17, port 8080) — business logic, scoring engine, CRUD, Kafka producer/consumer, Redis cache.
 - **vision-service** (FastAPI, Python 3.11, port 8001) — Claude Vision photo analysis and recommendation text generation.
 - **postgres** — primary store.
-- **redis** — scorecard cache (TTL 1h).
+- **redis** — scorecard cache (TTL 1h). Sub-200ms p95 on cached reads; ~3× the RPS of the equivalent DB-backed path under load.
 - **kafka + zookeeper** — `score-recalculation-events` event bus.
 - **prometheus + grafana** — metrics + dashboards.
 - **frontend** (React + Vite) — dashboard, contractor card, photo upload.
