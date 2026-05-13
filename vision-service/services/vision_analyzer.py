@@ -28,12 +28,27 @@ USER_PROMPT = (
 
 
 class VisionAnalyzer:
+    """Wraps a single Claude Vision call for site-photo quality analysis.
+
+    Reads ``ANTHROPIC_API_KEY`` from the environment at construction time.
+    If the key is absent (CI, local without secrets), :meth:`analyze`
+    short-circuits to neutral placeholder output so downstream code can run.
+    """
+
     def __init__(self, api_key: str | None = None, model: str | None = None):
         self.api_key = api_key or os.environ.get("ANTHROPIC_API_KEY")
         self.model = model or os.environ.get("VISION_MODEL", "claude-opus-4-6")
         self._client = Anthropic(api_key=self.api_key) if self.api_key else None
 
     def analyze(self, image_bytes: bytes, media_type: str = "image/jpeg") -> Dict[str, Any]:
+        """Send the image to Claude and return the parsed analysis dict.
+
+        ``media_type`` should match the uploaded image (e.g. ``image/jpeg``,
+        ``image/png``). On JSON parse failures we attempt a best-effort
+        substring recovery, then fall back to neutral defaults rather than
+        raising — the caller's quality score still has to make it into the
+        database row even if the LLM misbehaves.
+        """
         if not self._client:
             log.warning("ANTHROPIC_API_KEY not set — returning placeholder analysis")
             return self._placeholder()
