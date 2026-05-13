@@ -1,0 +1,12 @@
+# Every PR needs a review from the owner.
+# Granular ownership can be added per directory as the team grows.
+
+*                       @DakshithaK
+
+# Anything that touches the scoring math gets extra eyes.
+/contractoriq-api/src/main/java/com/contractoriq/services/ScoringEngine.java  @DakshithaK
+/contractoriq-api/src/test/java/com/contractoriq/services/ScoringEngineTest.java  @DakshithaK
+
+# Infra and CI changes
+/infrastructure/        @DakshithaK
+/.github/               @DakshithaK

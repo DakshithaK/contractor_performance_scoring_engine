@@ -1,0 +1,53 @@
+version: 2
+updates:
+  - package-ecosystem: maven
+    directory: /contractoriq-api
+    schedule:
+      interval: weekly
+      day: monday
+      time: "09:00"
+      timezone: Asia/Kolkata
+    open-pull-requests-limit: 5
+    labels: [dependencies, java]
+    groups:
+      spring-boot:
+        patterns: ["org.springframework*"]
+      test-libs:
+        patterns: ["org.junit*", "org.mockito*", "org.assertj*"]
+
+  - package-ecosystem: pip
+    directory: /vision-service
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 3
+    labels: [dependencies, python]
+
+  - package-ecosystem: npm
+    directory: /frontend
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 3
+    labels: [dependencies, frontend]
+    groups:
+      react:
+        patterns: ["react", "react-*"]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    labels: [dependencies, ci]
+
+  - package-ecosystem: docker
+    directory: /contractoriq-api
+    schedule:
+      interval: monthly
+    labels: [dependencies, docker]
+
+  - package-ecosystem: docker
+    directory: /vision-service
+    schedule:
+      interval: monthly
+    labels: [dependencies, docker]

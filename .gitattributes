@@ -1,0 +1,31 @@
+# Normalize line endings on checkin
+* text=auto eol=lf
+
+# Explicit text
+*.java       text diff=java
+*.py         text diff=python
+*.js         text
+*.jsx        text
+*.json       text
+*.yml        text
+*.yaml       text
+*.xml        text
+*.md         text
+*.sql        text
+*.sh         text eol=lf
+
+# Explicit binary
+*.png        binary
+*.jpg        binary
+*.jpeg       binary
+*.gif        binary
+*.ico        binary
+*.jar        binary
+*.zip        binary
+*.tar.gz     binary
+
+# Don't ship CI/IDE config when archived (GitHub release tarballs)
+.github      export-ignore
+.gitignore   export-ignore
+.gitattributes export-ignore
+.editorconfig export-ignore

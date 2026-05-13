@@ -1,0 +1,41 @@
+name: Bug report
+description: Something is broken or behaving wrong
+labels: [bug, triage]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What's wrong
+      description: One or two sentences. What did you expect, what happened instead?
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Reproduction steps
+      description: Smallest sequence that reliably triggers it.
+      placeholder: |
+        1. docker compose up
+        2. POST /api/v1/projects with body { ... }
+        3. Score never recalculates
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs
+      description: Spring Boot, vision-service, Kafka consumer — whatever you have.
+      render: shell
+  - type: input
+    id: env
+    attributes:
+      label: Environment
+      description: OS, Docker version, JDK version, anything unusual.
+      placeholder: macOS 14.4, Docker 27.0, JDK 17
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: Confirm
+      options:
+        - label: I searched existing issues before opening this one
+          required: true
