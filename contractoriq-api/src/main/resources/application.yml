@@ -68,3 +68,7 @@ logging:
   level:
     com.contractoriq: INFO
     org.springframework.kafka: WARN
+    org.apache.kafka: WARN
+    org.hibernate.SQL: WARN
+  pattern:
+    console: "%d{HH:mm:ss.SSS} %-5level [%thread] %logger{32} - %msg%n"
