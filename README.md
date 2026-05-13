@@ -17,10 +17,9 @@ hire / caution / avoid recommendation backed by Claude-generated reasoning.
 ## Run locally
 
 ```bash
-cd contractoriq
 cp .env.example .env   # set ANTHROPIC_API_KEY
 cd infrastructure
-docker compose up --build
+docker compose --env-file ../.env up --build
 ```
 
 Frontend (dev):
