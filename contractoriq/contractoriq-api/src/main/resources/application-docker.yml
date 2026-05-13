@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://postgres:5432/contractoriq
+    username: contractoriq
+    password: contractoriq
+  data:
+    redis:
+      host: redis
+      port: 6379
+  kafka:
+    bootstrap-servers: kafka:9092
+
+vision:
+  service:
+    url: http://vision-service:8001
+    timeout-ms: 30000

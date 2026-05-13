@@ -1,0 +1,171 @@
+{
+  "info": {
+    "name": "ContractorIQ",
+    "_postman_id": "f6a8c9e4-2b71-4d3a-9c61-7a3e0b5e1f10",
+    "description": "All endpoints exposed by contractoriq-api (Spring Boot) and vision-service (FastAPI).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl",          "value": "http://localhost:8080" },
+    { "key": "visionUrl",        "value": "http://localhost:8001" },
+    { "key": "contractorId",     "value": "00000000-0000-0000-0000-000000000000" },
+    { "key": "projectId",        "value": "00000000-0000-0000-0000-000000000000" }
+  ],
+  "item": [
+    {
+      "name": "Contractors",
+      "item": [
+        {
+          "name": "List all contractors",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/v1/contractors", "host": ["{{baseUrl}}"], "path": ["api","v1","contractors"] }
+          }
+        },
+        {
+          "name": "Get contractor by id",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/v1/contractors/{{contractorId}}", "host": ["{{baseUrl}}"], "path": ["api","v1","contractors","{{contractorId}}"] }
+          }
+        },
+        {
+          "name": "Create contractor",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"New Contractor LLP\",\n  \"city\": \"Bengaluru\",\n  \"trade\": \"CIVIL\",\n  \"phone\": \"+919000000000\",\n  \"joinedDate\": \"2024-01-15\",\n  \"active\": true\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/v1/contractors", "host": ["{{baseUrl}}"], "path": ["api","v1","contractors"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Projects",
+      "item": [
+        {
+          "name": "Ingest project (publishes Kafka event)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"contractorId\": \"{{contractorId}}\",\n  \"projectName\": \"Phoenix Tower B\",\n  \"city\": \"Bengaluru\",\n  \"startDate\": \"2025-08-01\",\n  \"endDate\": \"2025-11-15\",\n  \"plannedEndDate\": \"2025-11-01\",\n  \"budgetPlanned\": 1500000,\n  \"budgetActual\": 1650000,\n  \"customerRating\": 4,\n  \"completionStatus\": \"COMPLETED\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/v1/projects", "host": ["{{baseUrl}}"], "path": ["api","v1","projects"] }
+          }
+        },
+        {
+          "name": "Projects by contractor",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/v1/projects/contractor/{{contractorId}}", "host": ["{{baseUrl}}"], "path": ["api","v1","projects","contractor","{{contractorId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Photos",
+      "item": [
+        {
+          "name": "Analyze photo (multipart)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "file", "type": "file", "src": [] }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/photos/analyze?contractorId={{contractorId}}&projectId={{projectId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api","v1","photos","analyze"],
+              "query": [
+                { "key": "contractorId", "value": "{{contractorId}}" },
+                { "key": "projectId",    "value": "{{projectId}}" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Scores",
+      "item": [
+        {
+          "name": "Recalculate one",
+          "request": {
+            "method": "POST",
+            "url": { "raw": "{{baseUrl}}/api/v1/scores/calculate/{{contractorId}}", "host": ["{{baseUrl}}"], "path": ["api","v1","scores","calculate","{{contractorId}}"] }
+          }
+        },
+        {
+          "name": "Recalculate all",
+          "request": {
+            "method": "POST",
+            "url": { "raw": "{{baseUrl}}/api/v1/scores/calculate-all", "host": ["{{baseUrl}}"], "path": ["api","v1","scores","calculate-all"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Leaderboard",
+      "item": [
+        {
+          "name": "Top 10",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/v1/leaderboard", "host": ["{{baseUrl}}"], "path": ["api","v1","leaderboard"] }
+          }
+        },
+        {
+          "name": "Flagged (AVOID)",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/v1/flagged", "host": ["{{baseUrl}}"], "path": ["api","v1","flagged"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Vision Service (Python)",
+      "item": [
+        {
+          "name": "Health",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{visionUrl}}/health", "host": ["{{visionUrl}}"], "path": ["health"] }
+          }
+        },
+        {
+          "name": "Analyze photo",
+          "request": {
+            "method": "POST",
+            "body": {
+              "mode": "formdata",
+              "formdata": [{ "key": "file", "type": "file", "src": [] }]
+            },
+            "url": { "raw": "{{visionUrl}}/analyze-photo", "host": ["{{visionUrl}}"], "path": ["analyze-photo"] }
+          }
+        },
+        {
+          "name": "Generate recommendation",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"ACME Builders\",\n  \"city\": \"Bengaluru\",\n  \"trade\": \"CIVIL\",\n  \"overall_score\": 82.5,\n  \"delay_score\": 90.0,\n  \"budget_score\": 78.0,\n  \"quality_score\": 88.0,\n  \"customer_score\": 80.0,\n  \"project_count\": 6,\n  \"recommendation\": \"HIRE\"\n}"
+            },
+            "url": { "raw": "{{visionUrl}}/generate-recommendation", "host": ["{{visionUrl}}"], "path": ["generate-recommendation"] }
+          }
+        }
+      ]
+    }
+  ]
+}
