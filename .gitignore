@@ -43,3 +43,26 @@ logs/
 
 # OS
 Thumbs.db
+ehthumbs.db
+
+# Coverage
+coverage/
+htmlcov/
+jacoco.exec
+*.coverage
+.coverage.*
+
+# IDE — additional
+.fleet/
+*.code-workspace
+
+# Build artefacts
+*.tsbuildinfo
+.parcel-cache/
+.cache/
+
+# Local scratch
+.tmp/
+tmp/
+*.local.yml
+*.local.yaml
