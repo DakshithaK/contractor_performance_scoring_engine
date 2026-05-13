@@ -4,6 +4,8 @@ Automated contractor performance scoring engine for construction operations.
 Ingests project & site data, computes weighted performance scores, and produces a
 hire / caution / avoid recommendation backed by Claude-generated reasoning.
 
+![ContractorIQ dashboard — contractor performance board](docs/images/dashboard.png)
+
 ## Architecture
 
 - **contractoriq-api** (Spring Boot 3, Java 17, port 8080) — business logic, scoring engine, CRUD, Kafka producer/consumer, Redis cache.
@@ -59,6 +61,20 @@ mvn test
 The pre-built Grafana board lives at
 `monitoring/grafana/dashboards/contractoriq-dashboard.json` —
 import it under *Dashboards → New → Import* after the stack is up.
+
+## Performance
+
+Load-tested locally against the seeded dataset (12 contractors).
+
+| Endpoint                                | Concurrency | RPS   | p50   | p95   | p99   | Failed |
+|-----------------------------------------|-------------|-------|-------|-------|-------|--------|
+| `GET /contractors/{id}` (Redis cached)  | 25          | 3,063 | 7 ms  | 12 ms | 16 ms | 0      |
+| `GET /leaderboard` (DB query)           | 25          | 1,133 | 20 ms | 32 ms | 52 ms | 0      |
+| `GET /contractors` (list)               | 10          | 603   | 13 ms | 39 ms | 46 ms | 0      |
+
+Zero failures across 1,200 total requests. The Redis-cached read path
+serves ~3× the RPS of the DB-backed `/leaderboard` query — the cache
+earns its keep on the dashboard's hot path.
 
 ## Notes
 
